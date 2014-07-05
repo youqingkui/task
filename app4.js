@@ -8,9 +8,11 @@ var bodyParser = require('body-parser');
 var userName = process.env.EMAIL_NAME;
 var password = process.env.EMAIL_PWD;
 var errorEmail = process.env.ERROR_EMAIL;
+var mykarAddress = process.env.MYKAR_EMAIL;
 
-var errSend = require('./lib/errorSend.js');
-var timeServer = require('./lib/setTime');
+var errSend     = require('./lib/errorSend.js');
+var timeServer  = require('./lib/setTime.js');
+var remberOrder = require('./lib/remOrder.js');
 
 var accessLog = fs.createWriteStream('access.log', {
   flags: 'a'
@@ -29,7 +31,9 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
   }
 });
 
+/*开启服务*/
 timeServer.TimeServe();
+remberOrder.ReOrder();
 
 
 app.use(logger('dev'));
@@ -42,7 +46,7 @@ app.post('/send', function (req, res) {
   var subject = req.body.subject;
   var reAdd = req.body.address;
   if(!reAdd){
-    reAdd = errorEmail; 
+    reAdd = mykarAddress; 
   }
   var mailOptions = {
     from: userName, // 发件地址
