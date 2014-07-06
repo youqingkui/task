@@ -31,14 +31,19 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
   }
 });
 
+app.use(logger({
+  stream: accessLog
+}));
+
 /*开启服务*/
 timeServer.TimeServe();
 remberOrder.ReOrder();
 
 
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: true, limit: '200kb'}));
+app.use(bodyParser.json({limit: '200kb'}));
+
 
 
 app.post('/send', function (req, res) {
@@ -91,4 +96,4 @@ app.use(function (err, req, res, next) {
   next();
 });
 
-app.listen(3000);
+app.listen(3000, 'localhost');
