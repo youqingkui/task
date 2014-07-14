@@ -66,9 +66,12 @@ app.post('/send', function (req, res) {
         msg: '邮件发送失败',
         info: error
       });
-      res.setHeader('Content-Length', Buffer.byteLength(sendContent));
+/*      res.setHeader('Content-Length', Buffer.byteLength(sendContent));
       res.setHeader('Content-Type', 'text/javascript');
       res.send(sendContent);
+      */
+      console.log(sendContent);
+      
       errSend.errSend(subject, content, reAdd, error, userName, errorEmail, smtpTransport, nodemailer);
       console.log(error);
     } else {
@@ -76,15 +79,20 @@ app.post('/send', function (req, res) {
         status: 1,
         msg: '邮件发送成功'
       });
-      res.setHeader('Content-Length', Buffer.byteLength(sendContent));
+/*      res.setHeader('Content-Length', Buffer.byteLength(sendContent));
       res.setHeader('Content-Type', 'text/javascript');
-      res.send(sendContent);
+      res.send(sendContent);*/
+      console.log(sendContent);
       console.log("Message sent: " + response.message);
       //smtpTransport.close(); // 如果没用，关闭连接池
     }
     
     
   });
+  
+  var text = '已经调用发送邮件接口';
+  res.setHeader('Content-Length', Buffer.byteLength(text));
+  res.send(text);
 
 });
 
